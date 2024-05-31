@@ -13,11 +13,11 @@ internal class Program
         DateTime referenceDate = UI.GetReferenceDateUserInput();
         string providerName = UI.GetCloudProviderUserInput();
 
-        Log.Information($"Iniciando processamento de relatório em formato .csv referente à data: {referenceDate:dd/MM/yyyy} em {providerName}");
+        Log.Information($"Started report about products created in {referenceDate:dd/MM/yyyy}. Available at {providerName}");
 
         ReportGeneratorContext context = new(providerName);
         await context.ExecuteAsync(new(referenceDate));
 
-        Log.Information("Finalizado processamento de relatório");
+        Log.Information("Finished report");
     }
 }
