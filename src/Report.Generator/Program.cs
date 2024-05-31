@@ -1,13 +1,22 @@
-﻿namespace Report.Generator;
+﻿using Report.Generator.Domain.Parameters;
+using Report.Generator.Infrastructure.Contexts;
+
+namespace Report.Generator;
 
 internal class Program
 {
-    static void Main()
+    static async void Main()
     {
         int totalProducts = GetTotalProductsUserInput();
         DateTime referenceDate = GetReferenceDateUserInput();
+        string providerName = "AWS";
+
         Console.WriteLine($"Número total de produtos: {totalProducts}");
         Console.WriteLine($"Data de referência: {referenceDate:dd/MM/yyyy}");
+        Console.WriteLine($"Cloud Provider: {providerName}");
+
+        ReportGeneratorContext context = new(providerName);
+        await context.ExecuteAsync(new(totalProducts, referenceDate));
     }
 
     private static DateTime GetReferenceDateUserInput()
