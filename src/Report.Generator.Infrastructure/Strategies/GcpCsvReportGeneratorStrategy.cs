@@ -7,6 +7,7 @@ using Report.Generator.Domain.Interfaces;
 using Report.Generator.Domain.Parameters;
 using Report.Generator.Infrastructure.Repositories;
 using Google.Apis.Storage.v1.Data;
+using Serilog;
 
 namespace Report.Generator.Infrastructure.Strategies;
 
@@ -24,42 +25,47 @@ public class GcpCsvReportGeneratorStrategy(StorageClient storageClient) : IRepor
         int partNumber = 1;
         var uploadedParts = new List<string>();
 
-        using var memoryStream = new MemoryStream();
-        using var writer = new StreamWriter(memoryStream);
-        using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
-
-        await foreach (var product in ProductRepository.FetchProductsAsync(parameter))
+        try
         {
-            memoryStream.SetLength(0);
-            csvWriter.WriteRecord(product);
-            await csvWriter.NextRecordAsync();
-            await writer.FlushAsync();
-            memoryStream.Position = 0;
+            using var memoryStream = new MemoryStream();
+            using var writer = new StreamWriter(memoryStream);
+            using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
 
-            while (memoryStream.Position < memoryStream.Length)
+            await foreach (var product in ProductRepository.FetchProductsAsync(parameter))
             {
-                int bytesToRead = Math.Min(blockSize - bufferPosition, (int)(memoryStream.Length - memoryStream.Position));
-                int bytesRead = await memoryStream.ReadAsync(buffer.AsMemory(bufferPosition, bytesToRead));
-                bufferPosition += bytesRead;
+                memoryStream.SetLength(0);
+                csvWriter.WriteRecord(product);
+                await csvWriter.NextRecordAsync();
+                await writer.FlushAsync();
+                memoryStream.Position = 0;
 
-                if (bufferPosition == blockSize)
+                while (memoryStream.Position < memoryStream.Length)
                 {
-                    var partName = await UploadPartAsync(buffer, bufferPosition, bucketName, fileName, partNumber++);
-                    uploadedParts.Add(partName);
-                    bufferPosition = 0;
+                    int bytesToRead = Math.Min(blockSize - bufferPosition, (int)(memoryStream.Length - memoryStream.Position));
+                    int bytesRead = await memoryStream.ReadAsync(buffer.AsMemory(bufferPosition, bytesToRead));
+                    bufferPosition += bytesRead;
+
+                    if (bufferPosition == blockSize)
+                    {
+                        string partName = await UploadPartAsync(buffer, bufferPosition, bucketName, fileName, partNumber++);
+                        uploadedParts.Add(partName);
+                        bufferPosition = 0;
+                    }
                 }
             }
-        }
 
-        if (bufferPosition > 0)
+            if (bufferPosition > 0)
+            {
+                string partName = await UploadPartAsync(buffer, bufferPosition, bucketName, fileName, partNumber);
+                uploadedParts.Add(partName);
+            }
+
+            await ComposeObjectAsync(bucketName, uploadedParts, fileName);
+        }
+        finally
         {
-            var partName = await UploadPartAsync(buffer, bufferPosition, bucketName, fileName, partNumber);
-            uploadedParts.Add(partName);
+            ArrayPool<byte>.Shared.Return(buffer);
         }
-
-        ArrayPool<byte>.Shared.Return(buffer);
-
-        await ComposeObjectAsync(bucketName, uploadedParts, fileName);
     }
 
     private async Task<string> UploadPartAsync(byte[] buffer, int bufferLength, string bucketName, string fileName, int partNumber)
@@ -67,17 +73,17 @@ public class GcpCsvReportGeneratorStrategy(StorageClient storageClient) : IRepor
         var partName = $"{fileName}_part_{partNumber}";
         using var partStream = new MemoryStream(buffer, 0, bufferLength);
         await _storageClient.UploadObjectAsync(bucketName, partName, "text/csv", partStream);
-        Console.WriteLine($"Uploaded part {partNumber}");
+        Log.Information($"Uploaded part {partNumber}");
         return partName;
     }
 
     private async Task ComposeObjectAsync(string bucketName, List<string> partNames, string finalFileName)
     {
-        var sourceObjects = partNames.Select(part => new ComposeRequest.SourceObjectsData { Name = part }).ToList();
+        List<ComposeRequest.SourceObjectsData> sourceObjects = partNames.Select(part => new ComposeRequest.SourceObjectsData { Name = part }).ToList();
 
-        var targetObjectName = $"{finalFileName}.csv";
+        string targetObjectName = $"{finalFileName}.csv";
 
-        var composeRequest = new ComposeRequest
+        ComposeRequest composeRequest = new()
         {
             Destination = new Google.Apis.Storage.v1.Data.Object { Bucket = bucketName, Name = targetObjectName },
             SourceObjects = sourceObjects
@@ -90,7 +96,7 @@ public class GcpCsvReportGeneratorStrategy(StorageClient storageClient) : IRepor
 
     private async Task DeletePartsAsync(string bucketName, List<string> partNames)
     {
-        var tasks = new List<Task>();
+        List<Task> tasks = [];
 
         foreach (var partName in partNames)
         {
