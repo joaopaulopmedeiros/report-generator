@@ -1,7 +1,7 @@
 # Report Generator
 
 ## Description
-This repo aims to address a memory-safe approach to csv report generation on cloud environment with .NET
+This repo addresses a memory-safe csv report generation on cloud environment with .NET
 
 ## Clouds Providers
 <p align="left">
