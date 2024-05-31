@@ -10,6 +10,7 @@ using CsvHelper;
 using Report.Generator.Domain.Entities;
 using Report.Generator.Domain.Interfaces;
 using Report.Generator.Domain.Parameters;
+using Report.Generator.Infrastructure.Mappers;
 using Report.Generator.Infrastructure.Repositories;
 
 using Serilog;
@@ -45,6 +46,7 @@ public class AwsCsvReportGeneratorStrategy(IAmazonS3 s3Client) : IReportGenerato
             using var writer = new StreamWriter(memoryStream);
             using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
 
+            csvWriter.Context.RegisterClassMap<ProductCsvMapper>();
             csvWriter.WriteHeader<Product>();
             await csvWriter.NextRecordAsync();
 
