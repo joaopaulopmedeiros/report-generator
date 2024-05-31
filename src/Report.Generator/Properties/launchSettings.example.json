@@ -1,0 +1,15 @@
+{
+    "profiles": {
+        "Report.Generator": {
+            "commandName": "Project",
+            "environmentVariables": {
+                "DATABASE_CONNECTION": "",
+                "AZURE_BLOB_CONNECTION": "",
+                "GCP_BUCKET_NAME": "",
+                "AWS_S3_BUCKET_NAME": "",
+                "AWS_S3_PUBLIC_KEY": "",
+                "AWS_S3_PRIVATE_KEY": ""
+            }
+        }
+    }
+}
