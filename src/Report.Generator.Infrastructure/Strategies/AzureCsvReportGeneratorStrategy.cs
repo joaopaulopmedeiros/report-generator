@@ -30,9 +30,9 @@ public class AzureCsvReportGeneratorStrategy(BlobContainerClient blobContainerCl
 
         try
         {
-            using var memoryStream = new MemoryStream();
-            using var writer = new StreamWriter(memoryStream);
-            using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
+            using MemoryStream memoryStream = new();
+            using StreamWriter writer = new(memoryStream);
+            using CsvWriter csvWriter = new(writer, CultureInfo.InvariantCulture);
 
             csvWriter.Context.RegisterClassMap<ProductCsvMapper>();
             csvWriter.WriteHeader<Product>();
@@ -76,7 +76,7 @@ public class AzureCsvReportGeneratorStrategy(BlobContainerClient blobContainerCl
 
     private static async Task StageBlockAsync(BlockBlobClient blobClient, byte[] buffer, int bufferSize, ArrayList blockIDArrayList)
     {
-        using var blockStream = new MemoryStream(buffer, 0, bufferSize);
+        using MemoryStream blockStream = new(buffer, 0, bufferSize);
         string blockID = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString()));
         blockIDArrayList.Add(blockID);
         await blobClient.StageBlockAsync(blockID, blockStream);

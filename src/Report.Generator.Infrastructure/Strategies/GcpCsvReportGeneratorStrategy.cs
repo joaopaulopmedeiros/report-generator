@@ -27,9 +27,9 @@ public class GcpCsvReportGeneratorStrategy(StorageClient storageClient) : IRepor
 
         try
         {
-            using var memoryStream = new MemoryStream();
-            using var writer = new StreamWriter(memoryStream);
-            using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
+            using MemoryStream memoryStream = new();
+            using StreamWriter writer = new(memoryStream);
+            using CsvWriter csvWriter = new(writer, CultureInfo.InvariantCulture);
 
             await foreach (var product in ProductRepository.FetchProductsAsync(parameter))
             {
@@ -70,8 +70,8 @@ public class GcpCsvReportGeneratorStrategy(StorageClient storageClient) : IRepor
 
     private async Task<string> UploadPartAsync(byte[] buffer, int bufferLength, string bucketName, string fileName, int partNumber)
     {
-        var partName = $"{fileName}_part_{partNumber}";
-        using var partStream = new MemoryStream(buffer, 0, bufferLength);
+        string partName = $"{fileName}_part_{partNumber}";
+        using MemoryStream partStream = new(buffer, 0, bufferLength);
         await _storageClient.UploadObjectAsync(bucketName, partName, "text/csv", partStream);
         Log.Information($"Uploaded part {partNumber}");
         return partName;

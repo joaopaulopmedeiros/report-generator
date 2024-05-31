@@ -42,9 +42,9 @@ public class AwsCsvReportGeneratorStrategy(IAmazonS3 s3Client) : IReportGenerato
 
         try
         {
-            using var memoryStream = new MemoryStream();
-            using var writer = new StreamWriter(memoryStream);
-            using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
+            using MemoryStream memoryStream = new();
+            using StreamWriter writer = new(memoryStream);
+            using CsvWriter csvWriter = new(writer, CultureInfo.InvariantCulture);
 
             csvWriter.Context.RegisterClassMap<ProductCsvMapper>();
             csvWriter.WriteHeader<Product>();
@@ -109,7 +109,7 @@ public class AwsCsvReportGeneratorStrategy(IAmazonS3 s3Client) : IReportGenerato
 
     private async Task UploadPartAsync(byte[] buffer, int bufferLength, string bucketName, string keyName, string uploadId, int partNumber, List<UploadPartResponse> uploadResponses)
     {
-        using var partStream = new MemoryStream(buffer, 0, bufferLength);
+        using MemoryStream partStream = new(buffer, 0, bufferLength);
         UploadPartRequest uploadRequest = new()
         {
             BucketName = bucketName,
