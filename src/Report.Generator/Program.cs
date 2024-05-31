@@ -1,4 +1,4 @@
-﻿using Report.Generator.Infrastructure.Contexts;
+﻿using Report.Generator.Infrastructure.Strategies;
 
 using Serilog;
 
@@ -9,6 +9,7 @@ internal class Program
     static async Task Main()
     {
         Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
+
         DateTime referenceDate = UI.GetReferenceDateUserInput();
         string providerName = UI.GetCloudProviderUserInput();
 

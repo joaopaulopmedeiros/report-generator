@@ -2,9 +2,8 @@
 
 using Report.Generator.Domain.Interfaces;
 using Report.Generator.Domain.Parameters;
-using Report.Generator.Infrastructure.Strategies;
 
-namespace Report.Generator.Infrastructure.Contexts;
+namespace Report.Generator.Infrastructure.Strategies;
 
 public class ReportGeneratorContext
 {
@@ -17,7 +16,8 @@ public class ReportGeneratorContext
             string? publicKey = Environment.GetEnvironmentVariable("AWS_S3_PUBLIC_KEY");
             string? privateKey = Environment.GetEnvironmentVariable("AWS_S3_PRIVATE_KEY");
             _strategy = new AwsCsvReportGeneratorStrategy(new AmazonS3Client(publicKey, privateKey, Amazon.RegionEndpoint.SAEast1));
-        } else
+        }
+        else
         {
             throw new ArgumentException(null, nameof(providerName));
         }
