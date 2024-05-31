@@ -18,7 +18,8 @@ public class ProductRepository
 
         try
         {
-            long limit = 10_000;
+            int maxSize = 500_000;
+            int limit = 10_000;
             long offset = 0;
             long totalFoundItems = 0;
             string sqlQuery = "SELECT id, title, price, created_at FROM products ORDER BY id ASC OFFSET @offset LIMIT @limit";
@@ -38,7 +39,7 @@ public class ProductRepository
                     yield return product;
                 }
 
-                if (!hasAvailableData || totalFoundItems >= 500_000) break;
+                if (!hasAvailableData || totalFoundItems >= maxSize) break;
 
                 offset += limit;
             }
