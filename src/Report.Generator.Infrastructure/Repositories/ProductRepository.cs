@@ -4,7 +4,6 @@ using Dapper;
 using Npgsql;
 using Report.Generator.Domain.Entities;
 using Report.Generator.Domain.Parameters;
-using Report.Generator.Infrastructure.Queries;
 
 namespace Report.Generator.Infrastructure.Repositories;
 
@@ -20,7 +19,7 @@ public class ProductRepository
 
         try
         {
-            string sqlQuery = ProductReportQuery.Get();
+            string sqlQuery = @"SELECT id, title, price, created_at FROM products WHERE DATE(created_at) >= @referenceDate ORDER BY id ASC OFFSET @offset LIMIT @limit";
             int maxSize = 500_000;
             short limit = 10_000;
             long offset = 0;
