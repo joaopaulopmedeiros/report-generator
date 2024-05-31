@@ -20,6 +20,7 @@ public class ProductRepository
 
         try
         {
+            string sqlQuery = ProductReportQuery.Get();
             int maxSize = 500_000;
             short limit = 10_000;
             long offset = 0;
@@ -34,7 +35,7 @@ public class ProductRepository
 
                 bool hasAvailableData = false;
 
-                await foreach (var product in connection.QueryUnbufferedAsync<Product>(ProductReportQuery.Get(), parameters, commandTimeout: 60).WithCancellation(cancellationToken))
+                await foreach (var product in connection.QueryUnbufferedAsync<Product>(sqlQuery, parameters, commandTimeout: 60).WithCancellation(cancellationToken))
                 {
                     hasAvailableData = true;
                     totalFoundItems++;
