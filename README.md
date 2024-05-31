@@ -1,7 +1,7 @@
 # Report Generator
 
 ## Description
-This repo addresses a memory-safe csv report generation on cloud environment with .NET
+This repo addresses a memory-safe csv report generation on cloud environments with .NET
 
 ## Clouds Providers
 <p align="left">
@@ -12,4 +12,4 @@ This repo addresses a memory-safe csv report generation on cloud environment wit
 
 ## Notes
 - Google .NET SDK does not provide Multipart Upload feature. Currently i've opened an issue;
-- [TODO] error handling: product not found scenario etc.
+- [TODO] error handling (eg: product not found scenario etc) and automated tests.
