@@ -10,7 +10,7 @@ internal class Program
     {
         Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
 
-        DateTime referenceDate = UI.GetReferenceDateUserInput();
+        DateOnly referenceDate = UI.GetReferenceDateUserInput();
         string providerName = UI.GetCloudProviderUserInput();
 
         Log.Information($"Started report about products created in {referenceDate:dd/MM/yyyy}. Available at {providerName}");

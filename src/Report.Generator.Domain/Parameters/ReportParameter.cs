@@ -1,6 +1,6 @@
 ﻿namespace Report.Generator.Domain.Parameters;
 
-public class ReportParameter(DateTime referenceDate)
+public class ReportParameter(DateOnly referenceDate)
 {
-    public DateTime ReferenceDate { get; set; } = referenceDate;
+    public DateOnly ReferenceDate { get; set; } = referenceDate;
 }

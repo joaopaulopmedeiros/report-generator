@@ -44,7 +44,7 @@ public class AwsCsvReportGeneratorStrategy(IAmazonS3 s3Client) : IReportGenerato
             using var writer = new StreamWriter(memoryStream);
             using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
 
-            await foreach (var product in ProductRepository.FetchProductsAsync())
+            await foreach (var product in ProductRepository.FetchProductsAsync(parameter))
             {
                 memoryStream.SetLength(0);
                 csvWriter.WriteRecord(product);
@@ -85,7 +85,7 @@ public class AwsCsvReportGeneratorStrategy(IAmazonS3 s3Client) : IReportGenerato
         }
         catch (Exception exception)
         {
-            Console.WriteLine("An AmazonS3Exception was thrown: {0}", exception.Message);
+            Log.Error("An Exception was thrown: {0}", exception.Message);
 
             AbortMultipartUploadRequest abortMPURequest = new()
             {
