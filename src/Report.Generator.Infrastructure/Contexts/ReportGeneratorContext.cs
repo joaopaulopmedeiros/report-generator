@@ -12,12 +12,15 @@ public class ReportGeneratorContext
 
     public ReportGeneratorContext(string providerName)
     {
-        if (providerName == null || providerName != "AWS") throw new ArgumentNullException(nameof(providerName));
-
-        string? publicKey = Environment.GetEnvironmentVariable("AWS_S3_PUBLIC_KEY");
-        string? privateKey = Environment.GetEnvironmentVariable("AWS_S3_PRIVATE_KEY");
-
-        _strategy = new AwsCsvReportGeneratorStrategy(new AmazonS3Client(publicKey, privateKey, Amazon.RegionEndpoint.SAEast1));
+        if (providerName == "aws")
+        {
+            string? publicKey = Environment.GetEnvironmentVariable("AWS_S3_PUBLIC_KEY");
+            string? privateKey = Environment.GetEnvironmentVariable("AWS_S3_PRIVATE_KEY");
+            _strategy = new AwsCsvReportGeneratorStrategy(new AmazonS3Client(publicKey, privateKey, Amazon.RegionEndpoint.SAEast1));
+        } else
+        {
+            throw new ArgumentException(null, nameof(providerName));
+        }
     }
 
     public async Task ExecuteAsync(ReportParameter parameter) => await _strategy.ExecuteAsync(parameter);

@@ -10,7 +10,7 @@ internal class Program
     {
         Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
         DateTime referenceDate = UI.GetReferenceDateUserInput();
-        string providerName = "AWS";
+        string providerName = UI.GetCloudProviderUserInput();
 
         Log.Information($"Iniciando processamento de relatório em formato .csv referente à data: {referenceDate:dd/MM/yyyy} em {providerName}");
 

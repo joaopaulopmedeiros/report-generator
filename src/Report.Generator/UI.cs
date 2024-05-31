@@ -16,4 +16,18 @@ public class UI
 
         return dataReferencia;
     }
+
+    public static string GetCloudProviderUserInput()
+    {
+        Console.WriteLine("Por favor, especifique o provedor de nuvem (aws, gcp ou azure):");
+        string? cloudProviderInput = Console.ReadLine()?.ToLower();
+
+        while (cloudProviderInput != "aws" && cloudProviderInput != "gcp" && cloudProviderInput != "azure")
+        {
+            Console.WriteLine("Entrada inválida. Por favor, insira 'aws', 'gcp' ou 'azure':");
+            cloudProviderInput = Console.ReadLine()?.ToLower();
+        }
+
+        return cloudProviderInput;
+    }
 }
