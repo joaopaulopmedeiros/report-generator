@@ -1,7 +1,8 @@
 # Report Generator
 
 ## Description
-This repo addresses a memory-safe csv report generation on cloud environments with .NET
+This repo addresses a memory-safe csv report generation on cloud environments with .NET.
+Multipart upload is a feature key to generate file on demand at a given chunk size (eg: 5MB).
 
 ## Clouds Providers
 <p align="left">
