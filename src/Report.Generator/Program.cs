@@ -4,17 +4,15 @@ internal class Program
 {
     static void Main()
     {
-        Console.WriteLine("Por favor, especifique o número total de produtos do relatório:");
-        string? totalProdutosInput = Console.ReadLine();
-        int totalProdutos;
+        int totalProducts = GetTotalProductsUserInput();
+        DateTime referenceDate = GetReferenceDateUserInput();
+        Console.WriteLine($"Número total de produtos: {totalProducts}");
+        Console.WriteLine($"Data de referência: {referenceDate:dd/MM/yyyy}");
+    }
 
-        while (!int.TryParse(totalProdutosInput, out totalProdutos) || totalProdutos <= 0)
-        {
-            Console.WriteLine("Entrada inválida. Por favor, insira um número inteiro positivo para o número total de produtos:");
-            totalProdutosInput = Console.ReadLine();
-        }
-
-        Console.WriteLine("Por favor, especifique a data de referência (formato: dd/mm/aaaa):");
+    private static DateTime GetReferenceDateUserInput()
+    {
+        Console.WriteLine("Por favor, especifique a data de referência no formato: dd/mm/aaaa:");
         string? dataReferenciaInput = Console.ReadLine();
         DateTime dataReferencia;
 
@@ -24,7 +22,21 @@ internal class Program
             dataReferenciaInput = Console.ReadLine();
         }
 
-        Console.WriteLine($"\nNúmero total de produtos: {totalProdutos}");
-        Console.WriteLine($"Data de referência: {dataReferencia:dd/MM/yyyy}");
+        return dataReferencia;
+    }
+
+    private static int GetTotalProductsUserInput()
+    {
+        Console.WriteLine("Por favor, especifique o número total de produtos do relatório:");
+        string? totalProductsInput = Console.ReadLine();
+        int totalProducts;
+
+        while (!int.TryParse(totalProductsInput, out totalProducts) || totalProducts <= 0)
+        {
+            Console.WriteLine("Entrada inválida. Por favor, insira um número inteiro positivo para o número total de produtos:");
+            totalProductsInput = Console.ReadLine();
+        }
+
+        return totalProducts;
     }
 }
