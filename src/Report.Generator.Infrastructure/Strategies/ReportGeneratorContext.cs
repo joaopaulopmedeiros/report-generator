@@ -2,6 +2,8 @@
 
 using Azure.Storage.Blobs;
 
+using Google.Cloud.Storage.V1;
+
 using Report.Generator.Domain.Interfaces;
 using Report.Generator.Domain.Parameters;
 
@@ -24,6 +26,10 @@ public class ReportGeneratorContext
             string? connString = Environment.GetEnvironmentVariable("AZURE_BLOB_CONNECTION");
             BlobContainerClient blobContainerClient = new(connString, "dotnet-report-container");
             _strategy = new AzureCsvReportGeneratorStrategy(blobContainerClient);
+        }
+        else if (providerName == "gcp")
+        {
+            _strategy = new GcpCsvReportGeneratorStrategy(StorageClient.Create());
         }
         else
         {
