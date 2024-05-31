@@ -10,8 +10,4 @@
     <ProjectReference Include="..\Report.Generator.Domain\Report.Generator.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Contexts\" />
-  </ItemGroup>
-
 </Project>

@@ -9,4 +9,9 @@
     <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Report.Generator.Domain\Report.Generator.Domain.csproj" />
+    <ProjectReference Include="..\Report.Generator.Infrastructure\Report.Generator.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -5,6 +5,10 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Report.Generator", "src\Report.Generator\Report.Generator.csproj", "{04C2399C-B7F3-4FCE-9596-11A32FEE0507}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Report.Generator.Infrastructure", "src\Report.Generator.Infrastructure\Report.Generator.Infrastructure.csproj", "{FCB4BF2F-1179-4D3A-826C-063F2CC2FD89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Report.Generator.Domain", "src\Report.Generator.Domain\Report.Generator.Domain.csproj", "{91F64FF8-A560-4C59-8048-0F233E2F7326}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,8 +19,19 @@ Global
 		{04C2399C-B7F3-4FCE-9596-11A32FEE0507}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04C2399C-B7F3-4FCE-9596-11A32FEE0507}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04C2399C-B7F3-4FCE-9596-11A32FEE0507}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCB4BF2F-1179-4D3A-826C-063F2CC2FD89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCB4BF2F-1179-4D3A-826C-063F2CC2FD89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCB4BF2F-1179-4D3A-826C-063F2CC2FD89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCB4BF2F-1179-4D3A-826C-063F2CC2FD89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91F64FF8-A560-4C59-8048-0F233E2F7326}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91F64FF8-A560-4C59-8048-0F233E2F7326}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91F64FF8-A560-4C59-8048-0F233E2F7326}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91F64FF8-A560-4C59-8048-0F233E2F7326}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {133AA85F-1B72-40EA-9E2B-E29A925D1A7A}
 	EndGlobalSection
 EndGlobal
