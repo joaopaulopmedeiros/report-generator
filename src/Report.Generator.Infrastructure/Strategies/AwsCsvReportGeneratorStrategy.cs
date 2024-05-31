@@ -7,6 +7,7 @@ using Amazon.S3.Model;
 
 using CsvHelper;
 
+using Report.Generator.Domain.Entities;
 using Report.Generator.Domain.Interfaces;
 using Report.Generator.Domain.Parameters;
 using Report.Generator.Infrastructure.Repositories;
@@ -43,6 +44,9 @@ public class AwsCsvReportGeneratorStrategy(IAmazonS3 s3Client) : IReportGenerato
             using var memoryStream = new MemoryStream();
             using var writer = new StreamWriter(memoryStream);
             using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
+
+            csvWriter.WriteHeader<Product>();
+            await csvWriter.NextRecordAsync();
 
             await foreach (var product in ProductRepository.FetchProductsAsync(parameter))
             {
