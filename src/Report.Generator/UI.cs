@@ -4,27 +4,27 @@ public class UI
 {
     public static DateOnly GetReferenceDateUserInput()
     {
-        Console.WriteLine("Por favor, especifique a data de referência no formato: dd/mm/aaaa:");
-        string? dataReferenciaInput = Console.ReadLine();
-        DateOnly dataReferencia;
+        Console.WriteLine("Please input a reference date in format: dd/mm/yyyy:");
+        string? referenceDateInput = Console.ReadLine();
+        DateOnly referenceDate;
 
-        while (!DateOnly.TryParseExact(dataReferenciaInput, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out dataReferencia))
+        while (!DateOnly.TryParseExact(referenceDateInput, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out referenceDate))
         {
-            Console.WriteLine("Entrada inválida. Por favor, insira uma data no formato dd/mm/aaaa:");
-            dataReferenciaInput = Console.ReadLine();
+            Console.WriteLine("Invalid input. Please add a reference date in format: dd/mm/yyyy:");
+            referenceDateInput = Console.ReadLine();
         }
 
-        return dataReferencia;
+        return referenceDate;
     }
 
     public static string GetCloudProviderUserInput()
     {
-        Console.WriteLine("Por favor, especifique o provedor de nuvem (aws, gcp ou azure):");
+        Console.WriteLine("Please input a cloud provider (aws, gcp ou azure):");
         string? cloudProviderInput = Console.ReadLine()?.ToLower();
 
         while (cloudProviderInput != "aws" && cloudProviderInput != "gcp" && cloudProviderInput != "azure")
         {
-            Console.WriteLine("Entrada inválida. Por favor, insira 'aws', 'gcp' ou 'azure':");
+            Console.WriteLine("Invalid input. Please add 'aws', 'gcp' or 'azure' in lower case:");
             cloudProviderInput = Console.ReadLine()?.ToLower();
         }
 
