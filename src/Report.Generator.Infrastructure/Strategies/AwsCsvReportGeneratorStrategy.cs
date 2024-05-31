@@ -24,7 +24,7 @@ public class AwsCsvReportGeneratorStrategy(IAmazonS3 s3Client) : IReportGenerato
         string bucketName = Environment.GetEnvironmentVariable("AWS_S3_BUCKET_NAME") ?? "report-bucket";
         string keyName = "relatorio.csv";
         int blockSize = 5 * 1024 * 1024;
-
+        int partNumber = 1;
         byte[] buffer = ArrayPool<byte>.Shared.Rent(blockSize);
         int bufferPosition = 0;
 
@@ -43,8 +43,6 @@ public class AwsCsvReportGeneratorStrategy(IAmazonS3 s3Client) : IReportGenerato
             using var memoryStream = new MemoryStream();
             using var writer = new StreamWriter(memoryStream);
             using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
-
-            int partNumber = 1;
 
             await foreach (var product in ProductRepository.FetchProductsAsync())
             {
