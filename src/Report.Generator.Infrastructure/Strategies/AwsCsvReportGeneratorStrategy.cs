@@ -71,8 +71,6 @@ public class AwsCsvReportGeneratorStrategy(IAmazonS3 s3Client) : IReportGenerato
                 await UploadPartAsync(buffer, bufferPosition, bucketName, keyName, initResponse.UploadId, partNumber, uploadResponses);
             }
 
-            ArrayPool<byte>.Shared.Return(buffer);
-
             CompleteMultipartUploadRequest completeRequest = new()
             {
                 BucketName = bucketName,
@@ -96,6 +94,10 @@ public class AwsCsvReportGeneratorStrategy(IAmazonS3 s3Client) : IReportGenerato
                 UploadId = initResponse.UploadId
             };
             await _s3Client.AbortMultipartUploadAsync(abortMPURequest);
+        }
+        finally
+        {
+            ArrayPool<byte>.Shared.Return(buffer);
         }
     }
 
