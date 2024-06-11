@@ -4,7 +4,7 @@
 This repo addresses a memory-safe csv report generation on cloud environments with .NET.
 Multipart upload is a feature key to generate file on demand at a given chunk size (eg: 5MB).
 
-## Clouds Providers
+## Cloud Providers
 <p align="left">
 <img src="https://sretips.com.br/images/aws/aws.png" width="50">
 <img src="https://www.vaisulweb.com/wp-content/uploads/2019/02/azure_logo_794_new.png" width="50">
